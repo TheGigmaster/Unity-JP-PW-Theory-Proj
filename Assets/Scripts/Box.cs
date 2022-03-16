@@ -3,55 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Base class for all the player boxes. Can be used on its own or inhereted from.
-public class Box : MonoBehaviour
+public class Box : MonoBehaviour, IBox
 {
     // Uses values from prefab. Intended to be set with SetAttributes when new, modified boxes are spawned. 
-    private Vector3 boxSize;
-    private PhysicMaterial boxBounce;
-    private Color boxColor;
+    public PhysicMaterial boxBounce;
+    public Color boxColor;
 
     // Mainly to make sure the particle effect plays in time before the game object is removed.
     [SerializeField]
     private float despawnDelay = 2.0f;
 
     // I prefer to get components at runtime. Find it clutters up the inspector too much for me.
+    [SerializeField]
     private Renderer boxRenderer;
-    private Rigidbody boxRb;
+    
+    public Rigidbody boxRb;
+    [SerializeField]
     private BoxCollider boxCollider;
+    [SerializeField]
     private ParticleSystem fxPoof;
 
-    // Our prefab.
-    [SerializeField]
-    private GameObject boxPrefab;
-
-    // Getters in case I need em
-    public Vector3 BoxSize { get { return boxSize; } }
-    public PhysicMaterial BoxBounce { get { return boxBounce; } }
-    public Color BoxColor { get { return boxColor; } }
-
-    void Start()
+    void Awake()
     {
-        // Grabbing my components
         boxRenderer = GetComponent<Renderer>();
         boxRb = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
-        fxPoof = GetComponent<ParticleSystem>();
-    }
+        fxPoof = GetComponentInChildren<ParticleSystem>();
 
-    private void Update()
-    {
-        
+        boxColor = boxRenderer.material.color;
+        boxBounce = boxCollider.material;
     }
-
-    // Duplicate-, Move- and OpenBox are intended to be modified by classes inheriting from Box.
-    public virtual void DuplicateBox()
+    void Start()
     {
-        Debug.Log("DuplicateBox() called.");
-    }
+        // Grabbing my components
 
-    public virtual void MoveBox()
-    {
-        Debug.Log("MoveBox() called.");
     }
 
     public virtual void OpenBox()
@@ -59,13 +44,18 @@ public class Box : MonoBehaviour
         Debug.Log("OpenBox() called.");
     }
 
+    //public void ChangeBoxColor(float r, float g, float b)
+    //{
+    //    boxColor = new Color(r, g, b);
+    //    boxRenderer.material.color = boxColor;
+    //}
+
     // SetAttributes is mainly intended to be run by the instantiator with player-provided variables.
-    public void SetAttributes(Vector3 _boxSize, PhysicMaterial _boxBounce, Color _boxColor)
+    public void SetAttributes(PhysicMaterial _boxBounce, Color _boxColor)
     {
-        Debug.Log($"SetAttributes(size {_boxSize}, physMat {_boxBounce}, color {_boxColor}) called.");
-        boxSize = _boxSize;
-        boxBounce = _boxBounce;
-        boxColor = _boxColor;
+        Debug.Log($"SetAttributes(physMat {_boxBounce}, color {_boxColor}) called.");
+        boxCollider.material = _boxBounce;
+        boxRenderer.material.color = _boxColor;
     }
 
     // Spawn method will be on the instantiator.

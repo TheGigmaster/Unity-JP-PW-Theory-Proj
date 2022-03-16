@@ -80,6 +80,7 @@ public class AppBehavior : MonoBehaviour
     public void GotoMainMenu()
     {
         gameState = EnumGameState.MainMenu;
+        GameBehavior.Instance.GameReset();
         // Other stuff that needs to get reset when we go to menu, mainly the box position and rigidbody.gravity stuff
     }
 

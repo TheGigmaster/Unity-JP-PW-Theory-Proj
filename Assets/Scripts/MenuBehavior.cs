@@ -33,6 +33,11 @@ public class MenuBehavior : MonoBehaviour
     private Animation gameMenuAnimator;
     private CanvasGroup gameMenuCG;
 
+    public Slider redSlider;
+    public Slider greenSlider;
+    public Slider blueSlider;
+    public Slider bounceSlider;
+
     // Need to put in stuff here for holding player selections during game play
 
     private void Awake()
@@ -166,6 +171,25 @@ public class MenuBehavior : MonoBehaviour
         } // end if
     }
 
+    // It's game behavior's job to know what object is the player box at any given time. Then we need the Box script object on it so we can
+    // use it's method for changing color.
+    public void OnChangeBoxColor()
+    {
+        //var playerBox = GameBehavior.Instance.PlayerBox.GetComponent<Box>();
+        float r = redSlider.value;
+        float g = greenSlider.value;
+        float b = blueSlider.value;
+
+        GameBehavior.Instance.newBoxColor = new Color(r, g, b);
+    }
+
+    public void OnChangeBoxBounce()
+    {
+        PhysicMaterial pm = new PhysicMaterial();
+        pm.bounciness = bounceSlider.value;
+        pm.bounceCombine = PhysicMaterialCombine.Maximum;
+        GameBehavior.Instance.newBoxPM = pm;
+    }
     // These are here mainly so menu elements can get them. Enter/save/exit is the purview of the app manager, so we just get methods from it.
     public void OnGame()
     {
@@ -182,5 +206,22 @@ public class MenuBehavior : MonoBehaviour
     {
         AppBehavior.Instance.ExitGame();
     }
+
+    public void OnSpawn()
+    {
+        GameBehavior.Instance.SpawnBox();
+    }
+
+    public void OnOpen()
+    {
+        GameBehavior.Instance.PlayerBox.GetComponent<IBox>().OpenBox();
+    }
+
+    private void SetType(string type)
+    {
+        GameBehavior.Instance.newBoxType = type;
+        Debug.Log($"Menu manager told game manager that next box type is { type }");
+    }
+
 
 }
