@@ -39,6 +39,8 @@ public class Box : MonoBehaviour, IBox
 
     }
 
+    //POLYMORPHISM
+    // OpenBox() is inherited by child animal box classes, causing appropriate sprites to explode out on opening.
     public virtual void OpenBox()
     {
         Debug.Log("OpenBox() called.");
@@ -50,7 +52,10 @@ public class Box : MonoBehaviour, IBox
     //    boxRenderer.material.color = boxColor;
     //}
 
+    // INHERITANCE
+    // (also accessed using an interface, IBox)
     // SetAttributes is mainly intended to be run by the instantiator with player-provided variables.
+    // ENCAPSULATION (also kinda)
     public void SetAttributes(PhysicMaterial _boxBounce, Color _boxColor)
     {
         Debug.Log($"SetAttributes(physMat {_boxBounce}, color {_boxColor}) called.");

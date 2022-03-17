@@ -96,6 +96,8 @@ public class MenuBehavior : MonoBehaviour
     // One of the fun details here is because AppBehavior.Instance.GameState will NEVER be null (it will
     // at least be GameState = 0, or Main Menu, we don't need to check null!
     // The clips in the animation objects on both canvas group containers handle things like alpha, Y-coord and interactability.
+
+    // ABSTRACTION
     private void EvalGameState(AppBehavior.EnumGameState _gameState)
     { // Go, go, gadget abstract
         switch (_gameState.ToString())

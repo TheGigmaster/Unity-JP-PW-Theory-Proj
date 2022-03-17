@@ -20,6 +20,7 @@ public class AppBehavior : MonoBehaviour
 
     // Getter for gameState. I want other things to happen based on gameState of the instanced AppManager. 
     // Made a setter too for practice, but since AppManager should be the only thing that sets gameState I don't reeeally need it.
+    // ENCAPSULATION
     public EnumGameState GameState
     {
         get { return gameState; }
